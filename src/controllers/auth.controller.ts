@@ -1,11 +1,22 @@
 import { Request, Response } from "express";
+import { registerService } from "../services/auth.service";
+import { ResponseSchema } from "../types/auth.type";
 
-export const registerController = (req: Request, res: Response) => {
-  // Handle  registration logic using validated data from req.body
-  res.json({ message: "registered successfully", data: req.body });
-};
-
-export const loginController = (req: Request, res: Response) => {
-  // Handle  login logic using validated data from req.body
-  res.json({ message: "logged in successfully", data: req.body });
+export const registerController = async (req: Request, res: Response) => {
+  try {
+    const data = await registerService(req.body);
+    const response: ResponseSchema = {
+      success: true,
+      message: "User registered successfully",
+      data: data,
+    };
+    res.json(response);
+  } catch (error) {
+    const response: ResponseSchema = {
+      success: false,
+      message: (error as Error).message,
+      data: null,
+    };
+    res.status(500).json(response);
+  }
 };

@@ -1,19 +1,14 @@
 import express from "express";
+import { registrationSchema } from "../types/auth.type";
+import { validateData } from "../middleware/validateDataMiddleware";
+import { registerController } from "../controllers/auth.controller";
 
 const authRouter = express.Router();
 
-import { validateData } from "../middleware/validateDataMiddleware";
-import {
-  loginController,
-  registerController,
-} from "../controllers/auth.controller";
-import { registrationSchema, reqLoginSchema } from "../Types/auth.type";
-
 authRouter.post(
   "/register",
-  validateData(registrationSchema),
-  registerController
+  validateData(registrationSchema), // Middleware to validate the payload
+  registerController // Controller to handle the business logic
 );
-authRouter.post("/login", validateData(reqLoginSchema), loginController);
 
 export default authRouter;
