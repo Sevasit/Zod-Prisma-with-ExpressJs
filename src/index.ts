@@ -1,18 +1,23 @@
 import express from "express";
 import bodyParser from "body-parser";
-import authRouter from "./Routes/auth.routrs";
+import authRouter from "./routes/auth.routrs";
+import prisma from "./prisma-client";
+import dotenv from "dotenv";
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
+
+dotenv.config();
 
 app.use(bodyParser.json());
 
-app.get("/", (req, res) => {
-  res.send("Hello World");
+app.use("/api/auth", authRouter);
+
+app.get("/", async (req, res) => {
+  const data = await prisma.employees.findMany();
+  res.send(data);
 });
 
-app.use("/api/user", authRouter);
-
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running on http://localhost:${PORT} ✈️`);
 });
