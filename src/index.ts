@@ -1,10 +1,11 @@
 import express from "express";
 import bodyParser from "body-parser";
-import authRouter from "./routes/auth.routrs";
+import authRouter from "./routes/auth.routes";
 import prisma from "./prisma-client";
 import dotenv from "dotenv";
 import cors from "cors";
 import { auth } from "./middleware/validateDataMiddleware";
+import actuatorRouter from "./routes/actuator.routes";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -26,6 +27,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/auth", authRouter);
+app.use("/", actuatorRouter);
 
 app.get("/", auth, async (req, res) => {
   const data = await prisma.employees.findMany({
