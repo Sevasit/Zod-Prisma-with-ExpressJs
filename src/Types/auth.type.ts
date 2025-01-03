@@ -27,5 +27,6 @@ const responseSchema = z.object({
   data: z.optional(z.any()),
 });
 
+export type ReqLoginSchema = z.infer<typeof reqLoginSchema>;
 export type RegistrationSchema = z.infer<typeof registrationSchema>;
 export type ResponseSchema = z.infer<typeof responseSchema>;
